@@ -510,9 +510,14 @@ namespace HttpMultipartParser
                 }
                 else if (boundaryPos >= 0 && endBoundaryPos < 0)
                 {
-                    // Select boundary    
-                    endPos = boundaryPos;
-                    endPosLength = boundaryLength;
+                    // if the boundary is at the and of the buffer, it can be a potential endboundry where the "--" was just missed 
+                    // if so, don't mark it as an end, so another buffer will be read
+                    if (boundaryPos + boundaryLength < (this.BinaryBufferSize * 2) - 2)
+                    {
+                        // Select boundary    
+                        endPos = boundaryPos;
+                        endPosLength = boundaryLength;
+                    }
                 }
                 else if (boundaryPos < 0 && endBoundaryPos >= 0)
                 {
