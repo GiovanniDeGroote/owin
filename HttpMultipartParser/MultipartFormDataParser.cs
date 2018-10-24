@@ -388,7 +388,7 @@ namespace HttpMultipartParser
                 bool found = false;
                 for (int i = 0; i < pattern.Length; ++i)
                 {
-                    if (pattern[i] != data[offset + i])
+                    if (offset + i >= data.Length || pattern[i] != data[offset + i]) // prevent reading over buffer
                     {
                         found = false;
                         break;
